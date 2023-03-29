@@ -15,23 +15,14 @@ static void delay(uint16_t n )//no asm not work
 
 
 int main(void) {
-	
-	
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
- 
-	/* ??? */
-	GPIO_InitTypeDef typeDef;
-	typeDef.GPIO_Pin = GPIO_Pin_13;
-	typeDef.GPIO_Mode=GPIO_Mode_Out_PP;
-	typeDef.GPIO_Speed=GPIO_Speed_50MHz;
-	
-    GPIO_Init(GPIOC, &typeDef);
-	//int xms=1000*1000;
+	*(unsigned int *)0x40021018 |=(1<<4);
+	*(unsigned int *)0x40011004 &=~(1111<<(4*5));
+	*(unsigned int *)0x40011004 |=(1<<(4*5));
 	
 	while(1){
-		GPIO_ResetBits(GPIOC, GPIO_Pin_13);
-		delay(2);
-		GPIO_SetBits(GPIOC, GPIO_Pin_13);
+		*(unsigned int*)0x4001100C &=~(1<<13);//输出低电平，点亮
+		delay(92);
+		*(unsigned int*)0x4001100C |=(1<<13);//输出高电平，熄灭
 		delay(998);
 	}
 	

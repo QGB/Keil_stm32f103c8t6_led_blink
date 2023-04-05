@@ -11,8 +11,6 @@ static void delay(uint16_t n )//no asm not work
 			__ASM("nop"); 
 		}
 }
-    
-
 
 int main(void) {
 	*(unsigned int *)0x40021018 |=(1<<4);
